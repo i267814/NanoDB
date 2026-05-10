@@ -260,7 +260,7 @@ int main() {
     openLog();
     printf("\n========================================\n");
     printf("   NanoDB — NUCES MS CS Semester Project\n");
-    printf("   Iqra Illyas | Ayesha Bibi\n");
+    printf("   Ayesha Bibi\n");
     printf("========================================\n\n");
 
     NanoDB db;
