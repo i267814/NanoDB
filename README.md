@@ -125,5 +125,5 @@ All internal events are prefixed:
 ---
 
 ## GitHub
-https://github.com/YOUR_GITHUB/nanodb  
-*(Update this link with your actual repository URL)*
+https://github.com/i267814/NanoDB 
+
