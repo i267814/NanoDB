@@ -1,0 +1,64 @@
+# NanoDB Workload File — 50 TPC-H Queries
+# Format: COMMAND table [WHERE expr] or INSERT table fields...
+# Lines starting with # are comments
+
+# ── Simple INSERTs (10 queries) ──────────────────────────────────────────────
+INSERT customer 99001 1500.50 BUILDING 3
+INSERT customer 99002 -200.00 AUTOMOBILE 7
+INSERT customer 99003 8750.25 MACHINERY 1
+INSERT customer 99004 3200.00 HOUSEHOLD 5
+INSERT customer 99005 12000.75 FURNITURE 9
+INSERT orders 99001 99001 O 45000.00
+INSERT orders 99002 99002 F 8200.50
+INSERT orders 99003 99003 P 67000.00
+INSERT orders 99004 99001 O 15000.00
+INSERT orders 99005 99005 F 200000.00
+
+# ── Simple SELECTs (10 queries) ──────────────────────────────────────────────
+SELECT customer WHERE c_nationkey == 3
+SELECT customer WHERE c_acctbal > 10000
+SELECT customer WHERE c_acctbal < 0
+SELECT customer WHERE c_nationkey == 7
+SELECT customer WHERE c_custkey == 1
+SELECT orders WHERE o_orderstatus == O
+SELECT orders WHERE o_orderstatus == F
+SELECT orders WHERE o_totalprice > 50000
+SELECT orders WHERE o_custkey == 1
+SELECT_KEY customer 5000
+
+# ── Compound WHERE conditions (10 queries) ───────────────────────────────────
+SELECT customer WHERE c_acctbal > 5000 AND c_nationkey == 1
+SELECT customer WHERE c_acctbal < 0 OR c_nationkey == 9
+SELECT customer WHERE ( c_acctbal > 5000 AND c_mktsegment == BUILDING ) OR c_nationkey == 15
+SELECT customer WHERE c_acctbal > 8000 AND c_mktsegment == MACHINERY
+SELECT customer WHERE c_nationkey == 3 OR c_nationkey == 5
+SELECT orders WHERE o_totalprice > 100000 AND o_orderstatus == O
+SELECT orders WHERE o_totalprice < 5000 OR o_orderstatus == P
+SELECT orders WHERE o_custkey == 99001 AND o_orderstatus == O
+SELECT orders WHERE o_totalprice > 50000 AND o_totalprice < 100000
+SELECT orders WHERE o_orderstatus != F
+
+# ── Math expression queries (10 queries) ─────────────────────────────────────
+SELECT orders WHERE o_totalprice * 1.5 > 100000
+SELECT orders WHERE o_totalprice * 2 > 200000
+SELECT orders WHERE o_custkey % 2 == 0
+SELECT orders WHERE o_custkey % 5 == 0
+SELECT orders WHERE ( o_totalprice * 1.5 > 100000 AND o_custkey % 2 == 0 ) OR o_orderstatus != O
+SELECT customer WHERE c_acctbal + 500 > 10000
+SELECT customer WHERE c_nationkey * 2 > 10
+SELECT customer WHERE c_acctbal * 0.1 > 500
+SELECT customer WHERE c_custkey % 10 == 0
+SELECT orders WHERE o_totalprice / 1000 > 100
+
+# ── Join and admin operations (10 queries) ───────────────────────────────────
+JOIN customer orders lineitem
+SELECT_KEY customer 1
+SELECT_KEY customer 10000
+SELECT_KEY customer 20000
+SELECT_KEY customer 99001
+ADMIN UPDATE customer SET c_acctbal = 9999.99 WHERE c_custkey == 1 [ADMIN-PRIORITY]
+SELECT customer WHERE c_custkey == 1
+INSERT customer 99010 50000.00 BUILDING 2
+INSERT customer 99011 75000.00 AUTOMOBILE 4
+STATS
+FLUSH
